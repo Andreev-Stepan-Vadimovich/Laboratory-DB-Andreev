@@ -1,21 +1,3 @@
-# Database Lab
-
-Database Labs in YarSU, Andreev Stepan, PMI-32, Lab number 22.
-
-
-## Lab 1
-
-### ER-model:
-![alt text](Lab1/ER.png)
-
-### Relation-model:
-![alt text](Lab1/Relation.png)
-
-## Lab 2 (PGSQL)
-
-### SQL create tables:
-
-```
 CREATE TABLE Client (
     ID INT PRIMARY KEY,
     contact_person VARCHAR(50) NOT NULL,
@@ -73,25 +55,3 @@ CREATE TABLE Payment (
     accrual_id INT NOT NULL,
     FOREIGN KEY (accrual_id) REFERENCES Accruals(ID) ON DELETE RESTRICT
 );
-```
-
-## Client table:
-![alt text](Lab2/client.png)
-
-## Credit History table:
-![alt text](Lab2/history.png)
-
-## Credit Contract table:
-![alt text](Lab2/contract.png)
-
-## Credit Product table:
-![alt text](Lab2/product.png)
-
-## Accruals table:
-![alt text](Lab2/accruals.png)
-
-## Payment table:
-![alt text](Lab2/payment.png)
-
-## Diagram:
-![alt text](Lab2/diagram.png)
