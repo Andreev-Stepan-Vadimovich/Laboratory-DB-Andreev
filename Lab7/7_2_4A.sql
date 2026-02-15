@@ -1,0 +1,10 @@
+-- REPEATABLE READ
+-- Неповторяющееся чтение
+BEGIN;
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+
+SELECT phone FROM Client WHERE ID = 1;
+
+-- Ждём Сессию B
+SELECT phone FROM Client WHERE ID = 1;
+COMMIT;

@@ -1,0 +1,10 @@
+-- SERIALIZABLE
+-- Phantom Read
+BEGIN;
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+
+SELECT COUNT(*) FROM Client WHERE company_name LIKE 'ООО%';
+
+-- Ждём Сессию B
+SELECT COUNT(*) FROM Client WHERE company_name LIKE 'ООО%';
+COMMIT;

@@ -1,0 +1,10 @@
+-- REPEATABLE READ
+-- Phantom Read
+BEGIN;
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+
+SELECT COUNT(*) FROM Client WHERE company_name LIKE 'ООО%';
+
+-- Ждём Сессию B
+SELECT COUNT(*) FROM Client WHERE company_name LIKE 'ООО%';
+COMMIT;

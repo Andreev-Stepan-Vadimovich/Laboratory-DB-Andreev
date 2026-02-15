@@ -95,3 +95,7 @@ CREATE TABLE Payment (
 
 ## Diagram:
 ![alt text](Lab2/diagram.png)
+
+## Lab 4
+
+### Процедура для формирования списка клиентов с просроченными кредитами
