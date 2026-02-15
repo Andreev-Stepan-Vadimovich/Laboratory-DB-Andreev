@@ -1,0 +1,14 @@
+{
+ "year": 2014,
+ "month": 1,
+ "day": 1,
+ "hour": 0,
+ "temperature": -1,
+ "wind_direction": "Южный",
+ "wind": "3",
+ "code": "CL",
+ "clouds": 9,
+ "visibility": 10,
+ "humidity": 94,
+ "pressure": 1030
+}
