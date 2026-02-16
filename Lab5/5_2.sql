@@ -44,7 +44,7 @@ SELECT
     -- Маскируем contact_person: приводим к виду "Фамилия И.О."
     CASE 
         WHEN contact_person ~ '^[А-ЯЁ][а-яё]+\s[А-ЯЁ]\.[А-ЯЁ]\.$' THEN 
-            contact_person  -- уже в нужном формате
+            contact_person
         ELSE 
             -- Разбиваем на части по пробелам
             SPLIT_PART(contact_person, ' ', 1) || ' ' ||
@@ -53,7 +53,7 @@ SELECT
     END AS contact_person,
     -- Маскируем адрес: оставляем только город (до первой запятой)
     SPLIT_PART(legal_address, ',', 1) || ', ...' AS legal_address,
-    -- Маскируем телефон: +79161234567 → +7916xxxxx67
+    -- Маскируем телефон: +79161234567 -> +7916xxxxx67
     CASE 
         WHEN phone IS NOT NULL AND LENGTH(phone) >= 7 THEN 
             LEFT(phone, 5) || 'xxxxx' || RIGHT(phone, 2)

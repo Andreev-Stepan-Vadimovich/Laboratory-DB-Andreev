@@ -47,7 +47,7 @@ WHERE c.ID = 100;
 -- Фиксируем изменения
 COMMIT;
 
--- Проверка после COMMIT (уже вне транзакции)
+-- Проверка после COMMIT (вне транзакции)
 SELECT 'После COMMIT:' AS stage, c.company_name, cp.name
 FROM Client c
 JOIN Credit_Contract cc ON c.ID = cc.client_id

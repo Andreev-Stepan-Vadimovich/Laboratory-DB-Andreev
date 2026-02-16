@@ -6,7 +6,6 @@ DECLARE
     popular_product_name TEXT;
     client_rec RECORD;
 BEGIN
-    -- Вложенная логика (можно вынести в отдельную процедуру, но по заданию — вложенная)
     SELECT cp.name INTO popular_product_name
     FROM Credit_Product cp
     GROUP BY cp.name
@@ -28,4 +27,4 @@ BEGIN
 END;
 $$;
 
-CALL clients_with_most_popular_credit();
+CALL get_clients_with_most_popular_credit();

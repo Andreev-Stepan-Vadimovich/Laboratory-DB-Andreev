@@ -47,7 +47,7 @@ JOIN Credit_Contract cc ON c.ID = cc.client_id
 JOIN Credit_Product cp ON cp.contract_number = cc.number
 WHERE c.ID = 100;
 
--- Создаём точку сохранения (для демонстрации)
+-- Создаём точку сохранения
 SAVEPOINT sp1;
 
 -- Удалим данные (имитация ошибки)
@@ -67,7 +67,7 @@ SELECT 'После ROLLBACK TO SAVEPOINT:' AS stage, c.company_name
 FROM Client c
 WHERE c.ID = 100;
 
--- Теперь делаем полный откат всей транзакции
+-- Делаем полный откат всей транзакции
 ROLLBACK;
 
 -- Проверка извне транзакции: данных нет

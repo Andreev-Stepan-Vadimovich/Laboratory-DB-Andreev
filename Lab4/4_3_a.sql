@@ -13,14 +13,13 @@ BEGIN
     FROM Credit_Contract
     WHERE client_id = NEW.client_id AND number != NEW.number;
 
-    -- Если были кредиты, но не все погашены → ненадёжный
+    -- Если были кредиты, но не все погашены -> ненадёжный
     IF total_contracts > 0 AND repaid_contracts < total_contracts THEN
-        -- Удаляем созданный договор (если уже вставлен в AFTER)
         DELETE FROM Credit_Contract WHERE number = NEW.number;
         RAISE EXCEPTION 'Клиент % имеет непогашенные кредиты. Договор не может быть заключён.', NEW.client_id;
     END IF;
 
-    -- Если ≥2 погашенных кредита → даём льготу
+    -- Если ≥2 погашенных кредита -> даём льготу
     IF total_contracts >= 2 AND repaid_contracts = total_contracts THEN
         -- Уменьшаем ставку на 2 процентных пункта, но не ниже 1%
         UPDATE Credit_Product

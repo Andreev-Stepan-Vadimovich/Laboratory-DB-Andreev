@@ -40,9 +40,8 @@ GRANT SELECT, INSERT ON Payment TO role_employee;
 
 -- Выполнение только разрешённых функций
 GRANT EXECUTE ON FUNCTION get_revenue_current_year(INT) TO role_employee;
--- Запрет на остальные функции/процедуры — просто не даём права
 
--- Последовательности (если используются SERIAL)
+-- Последовательности
 GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO role_employee;
 
 

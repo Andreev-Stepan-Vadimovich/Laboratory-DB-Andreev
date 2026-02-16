@@ -99,3 +99,18 @@ CREATE TABLE Payment (
 ## Lab 4
 
 ### Процедура для формирования списка клиентов с просроченными кредитами
+
+
+## Lab 6
+### PostgreSQL не поддерживает графовые таблицы. Поэтому я использую extantion Apache AGE
+### Для установки на Ubuntu 24 и PG16 можно использовать эти материалы:
+### https://github.com/apache/age/releases/tag/PG16%2Fv1.6.0-rc0
+### https://github.com/apache/age?tab=readme-ov-file#-install-age-on-linux-and-macos
+
+## Команды для использования extantion (после установки) в нужной базе: 
+```
+CREATE EXTENSION age;
+LOAD 'age';
+SET search_path = ag_catalog, "$user", public;
+```
+
