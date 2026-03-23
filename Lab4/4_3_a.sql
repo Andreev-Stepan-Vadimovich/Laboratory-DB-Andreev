@@ -3,35 +3,50 @@ RETURNS TRIGGER AS $$
 DECLARE
     total_contracts INT;
     repaid_contracts INT;
-    unreliable_exists BOOLEAN;
+    overdue_contracts INT;
 BEGIN
-    -- Считаем договоры клиента ДО текущего (исключаем NEW.number)
+    -- Считаем статистику по существующим контрактам клиента
     SELECT 
         COUNT(*),
-        COUNT(*) FILTER (WHERE repaid = TRUE)
-    INTO total_contracts, repaid_contracts
+        COUNT(*) FILTER (WHERE repaid = TRUE),
+        COUNT(*) FILTER (WHERE repaid = FALSE AND end_date < CURRENT_DATE) -- Только просроченные
+    INTO total_contracts, repaid_contracts, overdue_contracts
     FROM Credit_Contract
-    WHERE client_id = NEW.client_id AND number != NEW.number;
+    WHERE client_id = NEW.client_id;
 
-    -- Если были кредиты, но не все погашены -> ненадёжный
-    IF total_contracts > 0 AND repaid_contracts < total_contracts THEN
-        DELETE FROM Credit_Contract WHERE number = NEW.number;
-        RAISE EXCEPTION 'Клиент % имеет непогашенные кредиты. Договор не может быть заключён.', NEW.client_id;
+    -- Если есть хоть один кредит с истекшим сроком и статусом "не погашен"
+    IF overdue_contracts > 0 THEN
+        RAISE EXCEPTION 'Клиент % имеет просроченные кредиты (% шт.). Новый договор не может быть заключён.', 
+                        NEW.client_id, overdue_contracts;
+        RETURN NULL; 
     END IF;
 
-    -- Если ≥2 погашенных кредита -> даём льготу
+    -- Если есть 2 или более полностью погашенных кредита в истории
     IF total_contracts >= 2 AND repaid_contracts = total_contracts THEN
-        -- Уменьшаем ставку на 2 процентных пункта, но не ниже 1%
         UPDATE Credit_Product
         SET interest_rate = GREATEST(interest_rate - 2, 1)
         WHERE contract_number = NEW.number;
+        
+        RAISE NOTICE 'Клиент % получил льготную ставку по продукту.', NEW.client_id;
     END IF;
 
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS trg_check_client_on_contract_insert ON Credit_Contract;
+
 CREATE TRIGGER trg_check_client_on_contract_insert
-AFTER INSERT ON Credit_Contract
+BEFORE INSERT ON Credit_Contract
 FOR EACH ROW
 EXECUTE FUNCTION check_client_reliability_on_contract_insert();
+
+
+-------
+INSERT INTO Credit_Contract (number, amount, repaid, start_date, end_date, debt_balance, client_id)
+VALUES (4003, 500000, FALSE, '2026-06-01', '2028-06-01', 500000, 4),
+		(4004, 500000, FALSE, '2026-06-01', '2028-06-01', 500000, 4);
+
+INSERT INTO Credit_Contract (number, amount, repaid, start_date, end_date, debt_balance, client_id)
+VALUES (4007, 500000, FALSE, '2026-06-01', '2028-06-01', 500000, 2);
+------

@@ -11,9 +11,9 @@ BEGIN;
 INSERT INTO Client (ID, contact_person, legal_address, company_name, phone)
 VALUES (
     100,
-    'Тестов Тест Тестович',
+    'Иванов Иван Иваныч',
     'г. Тестоград, ул. Тестовая, д. 99',
-    'ООО "ТестКредит"',
+    'ООО "ИванКредит"',
     '+79998887766'
 );
 

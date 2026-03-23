@@ -17,7 +17,7 @@ BEGIN
         JOIN Credit_Product cp ON cp.contract_number = cc.number
         WHERE cc.repaid = FALSE AND cc.end_date < CURRENT_DATE
     LOOP
-        RAISE NOTICE 'Клиент: %, Кредит: %, Сумма: %, Выдан: %, Погашен до: %',
+        RAISE NOTICE 'Клиент: %, Кредит: %, Сумма: %, Выдан: %, Не погашен до: %',
             rec.клиент, rec.название_кредита, rec.сумма, rec.дата_выдачи, rec.дата_погашения;
     END LOOP;
 END;
